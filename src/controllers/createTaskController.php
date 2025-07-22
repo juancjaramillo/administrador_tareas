@@ -5,7 +5,7 @@ require '../../config/db.php';
 require '../helpers/csrf.php';
 session_start();
 
-// CSRF
+// Validar CSRF
 if (!verifyCsrfToken($_POST['csrf_token'] ?? null)) {
     $_SESSION['error'] = 'Token CSRF inválido.';
     header('Location: ../views/create_task.php');
@@ -26,7 +26,7 @@ $priority    = $_POST['priority'];
 $user_id     = $_SESSION['user_id'];
 $fileName    = null;
 
-// Adjuntar archivo (opcional)
+// Adjuntar archivo (solo si existe archivo adjunto)
 if (!empty($_FILES['attachment']['name'])) {
     $uploadDir    = '../../public/uploads/';
     $origName     = basename($_FILES['attachment']['name']);

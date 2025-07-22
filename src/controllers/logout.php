@@ -12,7 +12,7 @@ header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 session_unset();
 session_destroy();
 
-// Que “Atrás” no muestre dashboard
+// Que “el Botón Atrás” no muestre dashboard
 echo "<script>
         history.replaceState({}, '', '/administrador_tareas/public/index.php');
         window.location.replace('/administrador_tareas/public/index.php');

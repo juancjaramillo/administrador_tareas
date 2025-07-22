@@ -38,7 +38,7 @@ if (!$task) {
     exit;
 }
 
-// Archivo adjunto nuevo (opcional)
+// Archivo adjunto nuevo (solo si sexiste adjunto)
 $fileName = $task['attachment'];
 if (!empty($_FILES['attachment']['name'])) {
     $uploadDir    = '../../public/uploads/';

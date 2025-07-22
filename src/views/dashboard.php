@@ -1,5 +1,4 @@
 <?php
-//Comprobar que el usuario sigue logueado
 require '../helpers/auth.php';
 ensureLoggedIn();
 require '../helpers/csrf.php';
@@ -50,7 +49,7 @@ $tasks = $stmt->fetchAll();
     <a href="../controllers/logout.php" class="btn btn-danger mb-3">Cerrar sesión</a>
     <a href="create_task.php" class="btn btn-success mb-3">+ Nueva Tarea</a>
 
-    <!-- Filtros -->
+
     <form method="GET" class="row mb-4 g-3">
         <div class="col-md-3">
             <label for="priority" class="form-label">Prioridad</label>
@@ -71,10 +70,9 @@ $tasks = $stmt->fetchAll();
         </div>
         <div class="col-md-3 d-flex align-items-end">
             <button type="submit" class="btn btn-primary me-2 w-50">Filtrar</button>
-            <button type="button" class="btn btn-outline-secondary w-50" onclick="window.location.href='dashboard.php';"
-      >
-        Limpiar
-      </button>
+            <button type="button" class="btn btn-outline-secondary w-50" onclick="window.location.href='dashboard.php';">
+                Limpiar
+            </button>
         </div>
     </form>
 
