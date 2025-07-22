@@ -11,7 +11,7 @@ Desarrollar un sistema avanzado de gestión de tareas que permitan a los usuario
 -permitir adjuntar archivos a las tareas.
 -permitir la clasificación y filtrado de tareas por prioridad, fecha de vencimiento, etc.
 
-4.interfaz de usuarios amigable: diseñar una interfaz de usuario intuitiva y amigable que permita a los usuarios gestionar fácilmente sus tareas 
+4. interfaz de usuarios amigable: diseñar una interfaz de usuario intuitiva y amigable que permita a los usuarios gestionar fácilmente sus tareas 
 
 
 ## Tecnologías
