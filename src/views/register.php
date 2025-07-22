@@ -1,28 +1,38 @@
-<?php include '../../config/db.php'; ?>
-<?php session_start(); ?>
+<?php
+session_start();
+require '../helpers/csrf.php';
+$csrf_token = generateCsrfToken();
+?>
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Registro</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <title>Registro</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="container mt-5">
-    <h2>Registro de Usuario</h2>
-    <form action="../../src/controllers/registerController.php" method="POST">
-        <div class="mb-3">
-            <label>Nombre de usuario</label>
-            <input type="text" name="username" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label>Correo electrónico</label>
-            <input type="email" name="email" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label>Contraseña</label>
-            <input type="password" name="password" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Registrarse</button>
-        <a href="login.php" class="btn btn-link">Ya tengo cuenta</a>
-    </form>
+
+  <?php include 'components/alerts.php'; ?>
+
+  <h2>Registro de Usuario</h2>
+  <form action="../../src/controllers/registerController.php" method="POST">
+    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
+    <div class="mb-3">
+      <label class="form-label">Nombre de usuario</label>
+      <input type="text" name="username" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Correo electrónico</label>
+      <input type="email" name="email" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Contraseña</label>
+      <input type="password" name="password" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Registrarse</button>
+    <a href="login.php" class="btn btn-link">Ya tengo cuenta</a>
+  </form>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

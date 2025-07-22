@@ -1,9 +1,6 @@
 <?php
-session_start();
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
-}
+require '../helpers/auth.php';
+ensureLoggedIn();
 
 require '../../config/db.php';
 
@@ -26,10 +23,16 @@ $csrf_token = generateCsrfToken();
 
 <head>
     <title>Editar Tarea</title>
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="../../public/js/prevent-back.js"></script>
 </head>
 
 <body class="container mt-5">
+    <?php include 'components/navbar.php'; ?>
+    <?php include 'components/alerts.php'; ?>
     <h2>Editar Tarea</h2>
     <form action="../controllers/updateTaskController.php" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">

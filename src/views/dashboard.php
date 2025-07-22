@@ -1,15 +1,12 @@
 <?php
-session_start();
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
-}
-
+//Comprobar que el usuario sigue logueado
+require '../helpers/auth.php';
+ensureLoggedIn();
+require '../helpers/csrf.php';
+$csrf_token = generateCsrfToken();
 require '../../config/db.php';
 
 $userId = $_SESSION['user_id'];
-
-// Filtros
 $priorityFilter = $_GET['priority'] ?? '';
 $dateFrom = $_GET['from'] ?? '';
 $dateTo = $_GET['to'] ?? '';
@@ -35,15 +32,22 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $tasks = $stmt->fetchAll();
 ?>
+
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Mis Tareas</title>
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="../../public/js/prevent-back.js"></script>
 </head>
+
 <body class="container mt-5">
     <h2>Bienvenido, <?= htmlspecialchars($_SESSION['username']) ?></h2>
-    <a href="logout.php" class="btn btn-danger mb-3">Cerrar sesión</a>
+    <a href="../controllers/logout.php" class="btn btn-danger mb-3">Cerrar sesión</a>
     <a href="create_task.php" class="btn btn-success mb-3">+ Nueva Tarea</a>
 
     <!-- Filtros -->
@@ -66,7 +70,11 @@ $tasks = $stmt->fetchAll();
             <input type="date" name="to" id="to" value="<?= $dateTo ?>" class="form-control">
         </div>
         <div class="col-md-3 d-flex align-items-end">
-            <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+            <button type="submit" class="btn btn-primary me-2 w-50">Filtrar</button>
+            <button type="button" class="btn btn-outline-secondary w-50" onclick="window.location.href='dashboard.php';"
+      >
+        Limpiar
+      </button>
         </div>
     </form>
 
@@ -84,31 +92,40 @@ $tasks = $stmt->fetchAll();
         </thead>
         <tbody>
             <?php if (count($tasks) === 0): ?>
-                <tr><td colspan="7" class="text-center">No se encontraron tareas.</td></tr>
+                <tr>
+                    <td colspan="7" class="text-center">No se encontraron tareas.</td>
+                </tr>
             <?php endif; ?>
             <?php foreach ($tasks as $task): ?>
-            <tr>
-                <td><?= htmlspecialchars($task['title']) ?></td>
-                <td><?= htmlspecialchars($task['description']) ?></td>
-                <td><?= $task['due_date'] ?></td>
-                <td><span class="badge bg-<?= $task['priority'] == 'alta' ? 'danger' : ($task['priority'] == 'media' ? 'warning' : 'success') ?>">
-                    <?= $task['priority'] ?>
-                </span></td>
-                <td><?= $task['completed'] ? '✔️' : '❌' ?></td>
-                <td>
-                    <?php if ($task['attachment']): ?>
-                        <a href="../../public/uploads/<?= urlencode($task['attachment']) ?>" target="_blank">Ver archivo</a>
-                    <?php else: ?>
-                        Sin archivo
-                    <?php endif; ?>
-                </td>
-                <td>
-                    <a href="edit_task.php?id=<?= $task['id'] ?>" class="btn btn-warning btn-sm">Editar</a>
-                    <a href="delete_task.php?id=<?= $task['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que deseas eliminar esta tarea?')">Eliminar</a>
-                </td>
-            </tr>
+                <tr>
+                    <td><?= htmlspecialchars($task['title']) ?></td>
+                    <td><?= htmlspecialchars($task['description']) ?></td>
+                    <td><?= $task['due_date'] ?></td>
+                    <td><span class="badge bg-<?= $task['priority'] == 'alta' ? 'danger' : ($task['priority'] == 'media' ? 'warning' : 'success') ?>">
+                            <?= $task['priority'] ?>
+                        </span></td>
+                    <td><?= $task['completed'] ? '✔️' : '❌' ?></td>
+                    <td>
+                        <?php if ($task['attachment']): ?>
+                            <a href="../../public/uploads/<?= urlencode($task['attachment']) ?>" target="_blank">Ver archivo</a>
+                        <?php else: ?>
+                            Sin archivo
+                        <?php endif; ?>
+                    </td>
+                    <td>
+                        <a href="edit_task.php?id=<?= $task['id'] ?>" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="delete_task.php?id=<?= $task['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que deseas eliminar esta tarea?')">Eliminar</a>
+                    </td>
+                </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
+
+
+
+
+
+
 </body>
+
 </html>
