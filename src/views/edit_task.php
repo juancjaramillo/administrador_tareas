@@ -17,16 +17,22 @@ $task = $stmt->fetch();
 if (!$task) {
     die('Tarea no encontrada o sin permisos.');
 }
+
+require '../helpers/csrf.php';
+$csrf_token = generateCsrfToken();
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Editar Tarea</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
+
 <body class="container mt-5">
     <h2>Editar Tarea</h2>
     <form action="../controllers/updateTaskController.php" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
         <input type="hidden" name="id" value="<?= $task['id'] ?>">
         <div class="mb-3">
             <label>Título</label>
@@ -66,4 +72,5 @@ if (!$task) {
         <a href="dashboard.php" class="btn btn-secondary">Cancelar</a>
     </form>
 </body>
+
 </html>
