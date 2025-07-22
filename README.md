@@ -36,4 +36,4 @@ Desarrollar un sistema avanzado de gestión de tareas que permitan a los usuario
 3. Importar el script SQL con las tablas `users` y `tasks`
 4. Configurar `config/db.php` con sus credenciales
 5. Iniciar XAMPP y abrir:  
-   👉 `http://localhost/administrador_tareas/public/index.php`
+ `http://localhost/administrador_tareas/public/index.php`
